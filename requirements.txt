@@ -3,7 +3,7 @@ fire
 numpy
 scipy
 torch
-datasets
+datasets==2.18.0
 # hf
 transformers
 # llama
@@ -20,7 +20,9 @@ setuptools~=67.8.0
 #blocksworld
 tarski
 #quantization
-peft~=0.5.0
+# peft~=0.5.0
+peft
 optimum
 ninja~=1.11.1
-bitsandbytes~=0.41.1
+# bitsandbytes~=0.41.1
+bitsandbytes
