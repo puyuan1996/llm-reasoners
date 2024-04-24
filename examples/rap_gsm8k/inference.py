@@ -80,6 +80,8 @@ if __name__ == '__main__':
 
     llama_ckpts = os.environ.get("LLAMA_CKPTS", None)
     llama_2_ckpts = os.environ.get("LLAMA_2_CKPTS", None)
+    # llama_2_ckpts = "/mnt/afs/niuyazhe/data/llama-2-7b-hf"
+
     local_rank = int(os.environ.get("LOCAL_RANK", 0))
     if local_rank != 0:
         sys.stdout = open(os.devnull, 'w')
@@ -89,10 +91,12 @@ if __name__ == '__main__':
     def main(base_lm: Literal['llama', 'llama.cpp', 'llama-2', 'hf', 'exllama'] = 'llama-2',
              llama_ckpts: str = llama_ckpts,
              llama_2_ckpts: str = llama_2_ckpts,
-             llama_size: str = '13B',
+            #  llama_size: str = '13B',
+             llama_size: str = '7B',
              llama_cpp_path: str = None,
              llama_cpp_n_batch: int = 512,
-             hf_path: str = 'meta-llama/Llama-2-13b-hf',
+             hf_path: str = '/mnt/afs/niuyazhe/data/llama-2-7b-hf',
+            #  hf_path: str = 'meta-llama/Llama-2-13b-hf',
              hf_peft_path: Optional[str] = None,
              hf_quantized: Optional[Literal['awq', 'int8', 'fp4', 'nf4']] = None,
              hf_load_awq_path: Optional[str] = None,

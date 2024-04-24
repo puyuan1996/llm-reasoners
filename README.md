@@ -7,6 +7,7 @@
 Given any reasoning problem, simply define the reward function and an optional world model (explained below), and let LLM reasoners take care of the rest, including Reasoning Algorithms, Visualization, LLM calling, and more!
 
 ## News
+- Apr. 22, 2024: We integrated [Llama-3](https://github.com/meta-llama/llama3), with additional useful APIs (e.g., customizing EOS tokens, calculating likelihood)
 - **Apr. 8, 2024: Our new [paper](assets/Reasoners.pdf) introducing LLM Reasoners is available!**
 - Mar. 29, 2024: [Grace Decoding](https://arxiv.org/abs/2305.14934) has been incoporated!
 - Oct. 25, 2023: A [video tutorial](https://www.youtube.com/watch?v=5QfOxtiw_ZU) on the visualizer of LLM Reasoners are available.
@@ -17,33 +18,30 @@ Given any reasoning problem, simply define the reward function and an optional w
 
 - Aug. 10, 2023: Llama-2 is supported! You can run [examples](https://github.com/Ber666/llm-reasoners/tree/main/examples) with Llama-2 now.
 
-
 ## Why Choose LLM Reasoners?
 
-- **Cutting-Edge Reasoning Algorithms**: We offer the most up-to-date search algorithms for reasoning with LLMs, such as [RAP-MCTS](https://arxiv.org/abs/2305.14992), [Tree-of-Thoughts](https://arxiv.org/abs/2305.10601), [Guided Decoding](https://arxiv.org/abs/2305.00633), and more. These advanced algorithms enable tree-structure reasoning and outperform traditional chain-of-thoughts approaches.
+- **Cutting-Edge Reasoning Algorithms**: We offer the most up-to-date search algorithms for reasoning with LLMs, such as:
+    - [Reasoning-via-Planning, MCTS (Hao et al., 2023)](https://arxiv.org/abs/2305.14992) ([example](https://github.com/maitrix-org/llm-reasoners/blob/main/examples/blocksworld/rap_inference.py))
+    - [Chain-of-thoughts (Wei et al., 2022)](https://arxiv.org/abs/2201.11903) ([example](https://github.com/maitrix-org/llm-reasoners/tree/main/examples/cot_gsm8k))
+    - [Least-to-most prompting (Zhou et al., 2022)](https://arxiv.org/abs/2205.10625) ([example](https://github.com/maitrix-org/llm-reasoners/tree/main/examples/least_to_most_strategyQA))
+    - [Tree-of-Thoughts, BFS (Yao et al., 2023)](https://arxiv.org/abs/2305.10601) ([example](https://github.com/maitrix-org/llm-reasoners/blob/main/examples/blocksworld/rap_inference.py))
+    - [Tree-of-Thoughts, DFS (Yao et al., 2023)](https://arxiv.org/abs/2305.10601) ([example](https://github.com/maitrix-org/llm-reasoners/blob/main/examples/blocksworld/rap_inference.py))
+    - [Guided Decoding, Beam Search (Xie et al., 2023)](https://arxiv.org/abs/2305.00633) ([example](https://github.com/maitrix-org/llm-reasoners/tree/main/examples/guided_gsm8k))
+    - [Grace Decoding, Greedy Decoding (Khalifa et al., 2023)](https://arxiv.org/abs/2305.14934) ([example](https://github.com/maitrix-org/llm-reasoners/tree/main/examples/grace_gsm8k))
 
-- **Intuitive Visualization and Interpretation**: Our library provides a [visualization tool](https://www.llm-reasoners.net/) to aid users in comprehending the reasoning process. Even for complex reasoning algorithms like Monte-Carlo Tree Search, users can easily diagnose and understand the process with one line of python code.
+- **Intuitive Visualization and Interpretation**: Our library provides a [visualization tool](https://www.llm-reasoners.net/) to aid users in comprehending the reasoning process. Even for complex reasoning algorithms like Monte-Carlo Tree Search, users can easily diagnose and understand the process with **one line of python code**. See an exmaple in the tutorial [notebook](demo.ipynb).
 
-- **Compatibility with popular libraries**: Our framework is compatible with popular LLM frameworks, e.g. Huggingface transformers, OpenAI API, etc. Specifically, we have integrated LLaMA-1/2 with the option of using [fairscale](https://github.com/facebookresearch/llama), [LLaMA.cpp](https://github.com/ggerganov/llama.cpp), [Exllama](https://github.com/Ber666/llm-reasoners/tree/main/reasoners/lm#exllama) for different needs.
+- **Compatibility with popular LLM libraries**: Our framework is compatible with popular LLM frameworks, e.g. `Huggingface transformers`, `OpenAI`/`Google`/`Anthropic` API, etc. Specifically, we have integrated LLaMA-1/2/3 with the option of using `fairscale` ([1,2](https://github.com/facebookresearch/llama), [3](https://github.com/meta-llama/llama3)), [LLaMA.cpp](https://github.com/ggerganov/llama.cpp), [Exllama](https://github.com/Ber666/llm-reasoners/tree/main/reasoners/lm#exllama) or `huggingface` for different needs, e.g., fastest inference speed, minimal hardware requirements, etc.
 
 
 ## Experiment Results
-We tested different reasoning algorithms with Llama-2 70B on the following benchmarks:
 
-| Method        | [GSM8K](https://arxiv.org/abs/2110.14168) | [AQuA](https://arxiv.org/abs/1705.04146) | [Game of 24](https://arxiv.org/abs/2305.10601) | [PrOntoQA](https://arxiv.org/abs/2210.01240) | [StrategyQA](https://arxiv.org/abs/2101.02235) | [Blocksworld](https://arxiv.org/abs/2305.15771) |
-|--------------|--------------|-------------|---------|----------|-------------------|-------------|
-| [CoT](https://arxiv.org/abs/2201.11903)          | 0.37 (0.54) | 0.09 (0.34) | 0.04    | 0.58     | 0.34 (0.76)    | 0.05        |
-| [ToT](https://arxiv.org/abs/2305.10601) (BFS)    | 0.53 (0.58) | 0.15 (0.42) | 0.04    | 0.52     | 0.41 (0.76)     | 0.09        |
-| [ToT](https://arxiv.org/abs/2305.10601) (DFS)    | 0.45 (0.52) | 0.10 (0.36) | 0.07    | 0.44     | 0.42 (0.76)     | 0.08        |
-| [RAP](https://arxiv.org/abs/2305.14992)          | 0.58 (0.64) | 0.20 (0.47) | 0.07    | 0.59     | 0.28 (0.77)     | 0.51        |
+- LLM Reasoners is applied to analyze the reasoning abilities of LLMs and the performance of multiple reasoning algorithms. See the comprehensive experiment results in the [AutoRace Leaderboard](https://www.llm-reasoners.net/leaderboard), and more analysis in the [blog](https://www.llm-reasoners.net/blog) and [paper](https://arxiv.org/abs/2404.05221).
 
-<span style='color:grey'>To evaluate the reasoning chains, we apply [AutoRace](https://www.llm-reasoners.net/leaderboard) for open-domain tasks, including GSM8k, AQuA, and StrategyQA. For other close-domain tasks, we test the reasoning chain with oracle evaluators (rule-based programs). By clicking the "show accuracy" button, you can see the final answer accuracy of some tasks for reference.</span>
+- It has been tested to successfully reproduce the performance of [Tree-of-Thoughts](https://arxiv.org/abs/2305.10601), [Guided Decoding](https://arxiv.org/abs/2305.00633) and [GRACE Decoding](https://arxiv.org/abs/2305.14934) with their official implementation. We list the results reported in their paper / reproduced from their official repositories for reference (†). Some results are on the subsets of the first 100 examples (*).
 
-
-
----
-
-Our library has been tested against official repos of [Tree-of-Thoughts](https://arxiv.org/abs/2305.10601), [Guided Decoding](https://arxiv.org/abs/2305.00633) and [GRACE Decoding](https://arxiv.org/abs/2305.14934). We list the results reported in their paper /  reproduced from their official repositories for reference (†). Some results are on the subsets of the first 100 examples (*).
+<div align="center">
+    
 |Method|Base LLM|GSM8k|
 |--|--|--|
 |[Guided Decoding](https://arxiv.org/abs/2305.00633)<sup>†</sup>|CodeX (PAL)|0.80|-|-|-|-|-|
@@ -58,7 +56,7 @@ Our library has been tested against official repos of [Tree-of-Thoughts](https:/
 |--|--|--|
 |[GRACE Decoding](https://arxiv.org/abs/2305.14934)<sup>†</sup>|Flan-T5-Large (Fine-tuned)|0.34|-|-|-|-|-|
 |GRACE Decoding| Flan-T5-Large (Fine-tuned)|[0.33\*](examples/grace_gsm8k)|-|-|-|-|-|
-
+</div>
 
 ## Background of LLM Reasoning
 
@@ -106,7 +104,7 @@ The three key components in a reasoning algorithm, *reward function*, *world mod
 ![Library Structure](assets/figure2_reasoners_v5.png)
 
 ## Quick Tour
-Let's go through the code of reasoning over Blocksworld problems. Note that the code is simplified for demonstration (check [here](https://github.com/Ber666/llm-reasoners/tree/main/examples/rap_blocksworld) for full experiment code).
+Let's go through the code of reasoning over Blocksworld problems. Note that the code is simplified for demonstration (check [here](demo.ipynb) for a runnable notebook).
 
 The first step is to define the world model: you will set up an initial state given a question in `init_state`, judge whether a state is terminal in `is_terminal`, and most importantly, define the world dynamics with `step`:
 ```python
@@ -270,10 +268,17 @@ Adding `--recursive` will help you clone exllama automatically. Note that some o
 ## Citation
 This project is an extension of the following paper:
 ```bibtex
-@article{hao2023reasoning,
-  title={Reasoning with language model is planning with world model},
-  author={Hao, Shibo and Gu, Yi and Ma, Haodi and Hong, Joshua Jiahua and Wang, Zhen and Wang, Daisy Zhe and Hu, Zhiting},
-  journal={arXiv preprint arXiv:2305.14992},
+@inproceedings{hao2023reasoning,
+  title={Reasoning with Language Model is Planning with World Model},
+  author={Hao, Shibo and Gu, Yi and Ma, Haodi and Hong, Joshua and Wang, Zhen and Wang, Daisy and Hu, Zhiting},
+  booktitle={Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing},
+  pages={8154--8173},
   year={2023}
+}
+@article{hao2024llm,
+  title={LLM Reasoners: New Evaluation, Library, and Analysis of Step-by-Step Reasoning with Large Language Models},
+  author={Hao, Shibo and Gu, Yi and Luo, Haotian and Liu, Tianyang and Shao, Xiyan and Wang, Xinyuan and Xie, Shuhua and Ma, Haodi and Samavedhi, Adithya and Gao, Qiyue and others},
+  journal={arXiv preprint arXiv:2404.05221},
+  year={2024}
 }
 ```
