@@ -18,8 +18,8 @@ from fairscale.nn.model_parallel.initialize import (
     get_model_parallel_rank,
 )
 
-from llama3.model import ModelArgs, Transformer
-from llama3.tokenizer import ChatFormat, Dialog, Message, Tokenizer
+from llama3.llama.model import ModelArgs, Transformer
+from llama3.llama.tokenizer import ChatFormat, Dialog, Message, Tokenizer
 from reasoners import LanguageModel, GenerateOutput
 
 
